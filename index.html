@@ -1,17 +1,23 @@
 <meta charset="UTF-8">
-<meta name="viewport"content="width=device-width">
+<meta name="viewport" content="width=device-width">
+<canvas id="c"></canvas>
 <script>
-(async()=>{
-const v=document.createElement('video'),ctx=c.getContext('2d')
-v.autoplay=1;
-const s=await navigator.mediaDevices.getMedia({video:{facingMode:'user'}});
-v.srcObject=s;
-v.onloadeddata=()=>
-c.width=v.videoWidth;cheight=v.videoHeight;
-cfx.drawImage(v,0,0);
-document.body.innerHTML=`<img src="${c.toDataURL('png')}"style="max-width:100%">`;
-s.getTracks().map(t=>t.stop());
-};
+(async () => {
+  const v = document.createElement('video');
+  const c = document.getElementById('c');
+  const ctx = c.getContext('2d');
+  
+  v.autoplay = true;
+  const s = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
+  v.srcObject = s;
+  
+  v.onloadeddata = () => {
+    c.width = v.videoWidth;
+    c.height = v.videoHeight;
+    ctx.drawImage(v, 0, 0);
+    document.body.innerHTML = `<img src="${c.toDataURL('png')}" style="max-width:100%">`;
+    s.getTracks().forEach(t => t.stop());
+  };
 })();
 </script>
 
